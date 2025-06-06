@@ -1,33 +1,28 @@
-# Active-Directory-Powershell-User-Search
-This PowerShell script queries Active Directory for a single user by their username (SamAccountName) and displays their details, including account status, password expiration, and manager information.
-File: Get-ADUserInfo.ps1
+Active Directory User Query Tools
+PowerShell scripts to fetch user details from Active Directory (AD). Ideal for IT admins for quick audits, onboarding checks, or security reviews.
 
-Description
-This PowerShell script queries Active Directory for a single user by their username (SamAccountName) and displays their details, including account status, password expiration, and manager information.
+📜 Scripts Overview
+Script	Description	Input	Output
+Get-ADUserInfo.ps1	Interactive lookup for a single user	Username prompt	Console output
+Bulk-ADUserSearch.ps1	Bulk search with error handling	Text file (usernames/emails)	CSV file
+Bulk-ADUserSearch-Lite.ps1	Bulk search (valid users only)	Text file (usernames/emails)	CSV file
+🛠 Requirements
+PowerShell 5.1+ (Windows)
 
-Usage
+ActiveDirectory Module (Install via: Install-WindowsFeature RSAT-AD-PowerShell)
+
+Permissions: AD read access.
+
+📌 Script Details
+1. Single User Lookup (Get-ADUserInfo.ps1)
+Description: Fetches and displays detailed AD properties for a single user.
+
+Usage:
 powershell
 .\Get-ADUserInfo.ps1
-When prompted, enter the username to search (e.g., jsmith).
+Example Output:
 
-Output
-Displays the following user properties in the console:
-
-Name, Surname, Email, Department
-
-Account Status (Enabled or Disabled)
-
-Password Expiration Status
-
-Last Password Set Date
-
-Dependencies
-ActiveDirectory PowerShell module (run Import-Module ActiveDirectory if needed).
-
-Requires admin rights to query AD.
-
-Example
-powershell
+plaintext
 Enter the username to search: jsmith
 
 User Information
@@ -38,84 +33,65 @@ Department: IT
 Account Active: True
 Password Expiring: True
 Last Password Set: 01/15/2023
-Script 2: Bulk AD User Lookup (With Error Handling)
-File: Bulk-ADUserSearch.ps1
+2. Bulk User Lookup (With Errors) (Bulk-ADUserSearch.ps1)
+Description: Processes a list of usernames/emails from a file, exports results to CSV, and logs missing users.
 
-Description
-This script reads a list of usernames or emails from a text file, queries Active Directory for each, and exports the results to a CSV file. Includes handling for missing users.
-
-Usage
+Usage:
 powershell
 .\Bulk-ADUserSearch.ps1
-Input File: Text file with one username/email per line.
+Input File Format:
 
-Output File: CSV file to save results.
+plaintext
+jsmith
+mjohnson
+invalid_user
+Output CSV Columns:
+Username, Name, Department, Manager, AccountActive, PasswordExpired, ...
 
-Output Format (CSV Columns)
-Username	Name	Department	Manager	AccountActive	PasswordExpired	...
-Dependencies
-ActiveDirectory module.
-
-Input file must exist (e.g., users.txt).
-
-Example
-Input File (users.txt):
-
-text
-jsmith  
-invalid_user  
-mjohnson  
-Output (results.csv):
+Example Output (results.csv):
 
 csv
-Username,Name,Department,...  
-jsmith,John Smith,IT,...  
+Username,Name,Department...  
+jsmith,John Smith,IT...  
 invalid_user,"User not found!",...  
-Script 3: Bulk AD User Lookup (Simplified)
-File: Bulk-ADUserSearch-Lite.ps1
+3. Bulk User Lookup (Lite) (Bulk-ADUserSearch-Lite.ps1)
+Description: Exports only valid AD users (skips missing entries).
 
-Description
-A streamlined version of Script 2 without "User not found" entries. Only exports valid AD users to CSV.
-
-Usage
+Usage:
 powershell
 .\Bulk-ADUserSearch-Lite.ps1
-Same as Script 2, but skips missing users.
+When to Use:
 
-When to Use
-When you only need data for valid users.
+For clean datasets where missing users are irrelevant.
 
-Faster for large lists where missing users are irrelevant.
+Faster processing for large lists.
 
-General Notes for All Scripts
-Permissions: Run in a PowerShell session with AD read access.
-
-Input Files: Ensure no empty lines or malformed entries.
-
-Output: CSV files open in Excel or any text editor.
-
-Suggested Repo Structure
-text
-/ActiveDirectory-Scripts  
+🗂 Repository Structure
+bash
+/AD-User-Queries  
 │  
-├── Get-ADUserInfo.ps1          # Single-user lookup  
-├── Bulk-ADUserSearch.ps1       # Bulk lookup (with errors)  
+├── Get-ADUserInfo.ps1          # Single-user interactive lookup  
+├── Bulk-ADUserSearch.ps1       # Bulk lookup with error tracking  
 ├── Bulk-ADUserSearch-Lite.ps1  # Bulk lookup (valid users only)  
-├── README.md                   # Overview of all scripts  
+├── README.md                   # This documentation  
 └── /examples  
-    ├── users.txt               # Sample input  
-    └── results.csv             # Sample output  
-README.md Snippet for Repo
-markdown
-# Active Directory Query Scripts  
+    ├── input_users.txt         # Sample input  
+    └── output_results.csv      # Sample output  
+💡 Tips
+Input Files: Ensure no empty lines or special characters.
 
-A collection of PowerShell scripts to fetch user details from Active Directory.  
+CSV Output: Open with Excel or Import-Csv in PowerShell.
 
-## **Scripts**  
-1. **Single User Lookup**: Interactive prompt for one user.  
-2. **Bulk Lookup (With Errors)**: Processes a list, logs missing users.  
-3. **Bulk Lookup (Lite)**: Exports only valid users.  
+Logging: Add -ErrorAction SilentlyContinue to suppress errors (optional).
 
-## **Requirements**  
-- Windows PowerShell 5.1+.  
-- ActiveDirectory module.  
+📜 License
+MIT – Free for reuse.
+
+🔄 How to Contribute
+Fork the repo.
+
+Add improvements (e.g., logging, GUI).
+
+Submit a PR!
+
+This README.md is ready to commit directly to your GitHub repo! It’s:
