@@ -93,5 +93,3 @@ Fork the repo.
 Add improvements (e.g., logging, GUI).
 
 Submit a PR!
-
-This README.md is ready to commit directly to your GitHub repo! It’s:
